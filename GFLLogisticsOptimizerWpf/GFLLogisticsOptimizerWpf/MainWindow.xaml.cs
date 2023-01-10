@@ -31,6 +31,18 @@ namespace GFLLogisticsOptimizerWpf
         public double Tokens;
     }
 
+    public struct MissionValuePerMin
+    {
+        public LogisticsMission Mission;
+        public double ValuePerMin;
+    }
+
+    public struct MissionSetCraftsPerMin
+    {
+        public List<LogisticsMission> MissionSet;
+        public double CraftsPerMin;
+    }
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -59,7 +71,7 @@ namespace GFLLogisticsOptimizerWpf
             return ValuePerMin;
         }
 
-        public double CalculateCraftsPerMin(LogisticsMission[] MissionSet,double ManpowerNeeded,double AmmoNeeded,double RationNeeded,double PartNeeded,double TDollNeeded,double EquipmentNeeded,double QuickProduceNeeded,double QuickRepairNeeded,double TokenNeeded)
+        public double CalculateCraftsPerMin(List<LogisticsMission> MissionSet,double ManpowerNeeded,double AmmoNeeded,double RationNeeded,double PartNeeded,double TDollNeeded,double EquipmentNeeded,double QuickProduceNeeded,double QuickRepairNeeded,double TokenNeeded)
         {
             double CraftsPerMin = 10000000;
 
@@ -72,7 +84,7 @@ namespace GFLLogisticsOptimizerWpf
             double QuickProduceCraftsPerMin = 0;
             double QuickRepairCraftsPerMin = 0;
             double TokenCraftsPerMin = 0;
-            for (int i = 0;i < MissionSet.Count();i++)
+            for (int i = 0;i < MissionSet.Count;i++)
             {
                 ManpowerCraftsPerMin += MissionSet[i].Manpower / ManpowerNeeded / MissionSet[i].TimeMins;
                 AmmoCraftsPerMin += MissionSet[i].Ammo / AmmoNeeded / MissionSet[i].TimeMins;
@@ -125,7 +137,7 @@ namespace GFLLogisticsOptimizerWpf
             return CraftsPerMin;
         }
 
-        public bool LoadMissionData(string FilePath)
+        public bool LoadMissionData(string FilePath,double GreatSuccessRate,double BaseRankBonus)
         {
             MissionList.Clear();
             try
@@ -138,13 +150,13 @@ namespace GFLLogisticsOptimizerWpf
                     {
                         string line = reader.ReadLine();
                         var values = line.Split(',');
-
+                        
                         LogisticsMission NewMission = new LogisticsMission();
                         NewMission.Area = values[0].Replace('.', '-');
-                        NewMission.Manpower = Convert.ToDouble(values[1]);
-                        NewMission.Ammo = Convert.ToDouble(values[2]);
-                        NewMission.Rations = Convert.ToDouble(values[3]);
-                        NewMission.Parts = Convert.ToDouble(values[4]);
+                        NewMission.Manpower = Convert.ToDouble(values[1]) * (BaseRankBonus + 1.0) * (1 + 0.5 * GreatSuccessRate);
+                        NewMission.Ammo = Convert.ToDouble(values[2]) * (BaseRankBonus + 1.0) * (1 + 0.5 * GreatSuccessRate);
+                        NewMission.Rations = Convert.ToDouble(values[3]) * (BaseRankBonus + 1.0) * (1 + 0.5 * GreatSuccessRate);
+                        NewMission.Parts = Convert.ToDouble(values[4]) * (BaseRankBonus + 1.0) * (1 + 0.5 * GreatSuccessRate);
                         NewMission.TimeMins = Convert.ToInt32(values[5]);
                         NewMission.TDollContracts = Convert.ToDouble(values[6]);
                         NewMission.EquipmentContracts = Convert.ToDouble(values[7]);
@@ -152,6 +164,19 @@ namespace GFLLogisticsOptimizerWpf
                         NewMission.QuickRepairContracts = Convert.ToDouble(values[9]);
                         NewMission.Tokens = Convert.ToDouble(values[10]);
 
+                        //calculate the effect of great success on the chance of getting bonus items
+                        double TotalChanceItemBeforeGreatSuccess = NewMission.TDollContracts + NewMission.EquipmentContracts + NewMission.QuickProduceContracts + NewMission.QuickRepairContracts + NewMission.Tokens;
+                        if (TotalChanceItemBeforeGreatSuccess > 0)
+                        {
+                            double TotalChanceItemAfterGreatSuccess = GreatSuccessRate + TotalChanceItemBeforeGreatSuccess * (1 - GreatSuccessRate);
+                            double GreatSuccessBonus = TotalChanceItemAfterGreatSuccess - TotalChanceItemBeforeGreatSuccess;
+
+                            NewMission.TDollContracts += (NewMission.TDollContracts / TotalChanceItemBeforeGreatSuccess) * GreatSuccessBonus;
+                            NewMission.EquipmentContracts += (NewMission.EquipmentContracts / TotalChanceItemBeforeGreatSuccess) * GreatSuccessBonus;
+                            NewMission.QuickProduceContracts += (NewMission.QuickProduceContracts / TotalChanceItemBeforeGreatSuccess) * GreatSuccessBonus;
+                            NewMission.QuickRepairContracts += (NewMission.QuickRepairContracts / TotalChanceItemBeforeGreatSuccess) * GreatSuccessBonus;
+                            NewMission.Tokens += (NewMission.Tokens / TotalChanceItemBeforeGreatSuccess) * GreatSuccessBonus;
+                        }
                         MissionList.Add(NewMission);
                     }                
                 }
@@ -166,7 +191,7 @@ namespace GFLLogisticsOptimizerWpf
 
         private void TestButton_Click(object sender, RoutedEventArgs e)
         {
-            LoadMissionData(@"..\..\..\..\Logistics Data.csv");
+            LoadMissionData(@"..\..\..\..\Logistics Data.csv",0.66,0.11);
         }
     }
 }

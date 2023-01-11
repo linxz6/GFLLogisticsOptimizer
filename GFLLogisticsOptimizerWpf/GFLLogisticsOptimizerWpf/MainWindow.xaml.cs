@@ -63,6 +63,7 @@ namespace GFLLogisticsOptimizerWpf
     {
         public List<LogisticsMission> MissionSet;
         public double CraftsPerMin;
+        public double CraftWeighedResourcesPerMin;
 
         public override string ToString()
         {
@@ -134,15 +135,42 @@ namespace GFLLogisticsOptimizerWpf
             double TokenCraftsPerMin = 0;
             for (int i = 0;i < MissionSet.Count;i++)
             {
-                ManpowerCraftsPerMin += MissionSet[i].Manpower / ManpowerNeeded / MissionSet[i].TimeMins;
-                AmmoCraftsPerMin += MissionSet[i].Ammo / AmmoNeeded / MissionSet[i].TimeMins;
-                RationCraftsPerMin += MissionSet[i].Rations / RationNeeded / MissionSet[i].TimeMins;
-                PartCraftsPerMin += MissionSet[i].Parts / PartNeeded / MissionSet[i].TimeMins;
-                TDollCraftsPerMin += MissionSet[i].TDollContracts / TDollNeeded / MissionSet[i].TimeMins;
-                EquipmentCraftsPerMin += MissionSet[i].EquipmentContracts / EquipmentNeeded / MissionSet[i].TimeMins;
-                QuickProduceCraftsPerMin += MissionSet[i].QuickProduceContracts / QuickProduceNeeded / MissionSet[i].TimeMins;
-                QuickRepairCraftsPerMin += MissionSet[i].QuickRepairContracts / QuickRepairNeeded / MissionSet[i].TimeMins;
-                TokenCraftsPerMin += MissionSet[i].Tokens / TokenNeeded / MissionSet[i].TimeMins;
+                if (ManpowerNeeded > 0)
+                {
+                    ManpowerCraftsPerMin += MissionSet[i].Manpower / ManpowerNeeded / MissionSet[i].TimeMins;
+                }
+                if (AmmoNeeded > 0)
+                {
+                    AmmoCraftsPerMin += MissionSet[i].Ammo / AmmoNeeded / MissionSet[i].TimeMins;
+                }
+                if (RationNeeded > 0)
+                {
+                    RationCraftsPerMin += MissionSet[i].Rations / RationNeeded / MissionSet[i].TimeMins;
+                }
+                if (PartNeeded > 0)
+                {
+                    PartCraftsPerMin += MissionSet[i].Parts / PartNeeded / MissionSet[i].TimeMins;
+                }
+                if (TDollNeeded > 0)
+                {
+                    TDollCraftsPerMin += MissionSet[i].TDollContracts / TDollNeeded / MissionSet[i].TimeMins;
+                }
+                if (EquipmentNeeded > 0)
+                {
+                    EquipmentCraftsPerMin += MissionSet[i].EquipmentContracts / EquipmentNeeded / MissionSet[i].TimeMins;
+                }
+                if (QuickProduceNeeded > 0)
+                {
+                    QuickProduceCraftsPerMin += MissionSet[i].QuickProduceContracts / QuickProduceNeeded / MissionSet[i].TimeMins;
+                }
+                if (QuickRepairNeeded > 0)
+                {
+                    QuickRepairCraftsPerMin += MissionSet[i].QuickRepairContracts / QuickRepairNeeded / MissionSet[i].TimeMins;
+                }
+                if (TokenNeeded > 0)
+                {
+                    TokenCraftsPerMin += MissionSet[i].Tokens / TokenNeeded / MissionSet[i].TimeMins;
+                }
             }
 
             //the smallest crafts per minute is the overall rate
@@ -152,7 +180,7 @@ namespace GFLLogisticsOptimizerWpf
             }
             if (AmmoNeeded > 0 && AmmoCraftsPerMin < CraftsPerMin)
             {
-                CraftsPerMin = ManpowerCraftsPerMin;
+                CraftsPerMin = AmmoCraftsPerMin;
             }
             if (RationNeeded > 0 && RationCraftsPerMin < CraftsPerMin)
             {
@@ -184,6 +212,90 @@ namespace GFLLogisticsOptimizerWpf
             }
 
             return CraftsPerMin;
+        }
+
+        public double CalculateCraftWeightedValuePerMin(List<LogisticsMission> MissionSet, double ManpowerNeeded, double AmmoNeeded, double RationNeeded, double PartNeeded, double TDollNeeded, double EquipmentNeeded, double QuickProduceNeeded, double QuickRepairNeeded, double TokenNeeded)
+        {
+            double CraftValuePerMin = 0;
+            int TypesOfResourceNeeded = 0;
+            if(ManpowerNeeded > 0)
+            {
+                TypesOfResourceNeeded++;
+            }
+            if (AmmoNeeded > 0)
+            {
+                TypesOfResourceNeeded++;
+            }
+            if (RationNeeded > 0)
+            {
+                TypesOfResourceNeeded++;
+            }
+            if (PartNeeded > 0)
+            {
+                TypesOfResourceNeeded++;
+            }
+            if (TDollNeeded > 0)
+            {
+                TypesOfResourceNeeded++;
+            }
+            if (EquipmentNeeded > 0)
+            {
+                TypesOfResourceNeeded++;
+            }
+            if (QuickProduceNeeded > 0)
+            {
+                TypesOfResourceNeeded++;
+            }
+            if (QuickRepairNeeded > 0)
+            {
+                TypesOfResourceNeeded++;
+            }
+            if (TokenNeeded > 0)
+            {
+                TypesOfResourceNeeded++;
+            }
+
+            for(int i = 0;i < MissionSet.Count;i++)
+            {
+                if (ManpowerNeeded > 0 && MissionSet[i].Manpower > 0)
+                {
+                    CraftValuePerMin += MissionSet[i].Manpower / ManpowerNeeded / MissionSet[i].TimeMins;
+                }
+                if (AmmoNeeded > 0 && MissionSet[i].Ammo > 0)
+                {
+                    CraftValuePerMin += MissionSet[i].Ammo / AmmoNeeded / MissionSet[i].TimeMins;
+                }
+                if (RationNeeded > 0 && MissionSet[i].Rations > 0)
+                {
+                    CraftValuePerMin += MissionSet[i].Rations / RationNeeded / MissionSet[i].TimeMins;
+                }
+                if (PartNeeded > 0 && MissionSet[i].Parts > 0)
+                {
+                    CraftValuePerMin += MissionSet[i].Parts / PartNeeded / MissionSet[i].TimeMins;
+                }
+                if (TDollNeeded > 0 && MissionSet[i].TDollContracts > 0)
+                {
+                    CraftValuePerMin += MissionSet[i].TDollContracts / TDollNeeded / MissionSet[i].TimeMins;
+                }
+                if (EquipmentNeeded > 0 && MissionSet[i].EquipmentContracts > 0)
+                {
+                    CraftValuePerMin += MissionSet[i].EquipmentContracts / EquipmentNeeded / MissionSet[i].TimeMins;
+                }
+                if (QuickProduceNeeded > 0 && MissionSet[i].QuickProduceContracts > 0)
+                {
+                    CraftValuePerMin += MissionSet[i].QuickProduceContracts / QuickProduceNeeded / MissionSet[i].TimeMins;
+                }
+                if (QuickRepairNeeded > 0 && MissionSet[i].QuickRepairContracts > 0)
+                {
+                    CraftValuePerMin += MissionSet[i].QuickRepairContracts / QuickRepairNeeded / MissionSet[i].TimeMins;
+                }
+                if (TokenNeeded > 0 && MissionSet[i].Tokens > 0)
+                {
+                    CraftValuePerMin += MissionSet[i].Tokens / TokenNeeded / MissionSet[i].TimeMins;
+                }
+            }
+
+            return CraftValuePerMin;
         }
 
         public bool LoadMissionData(string FilePath,double GreatSuccessRate,double BaseRankBonus)
@@ -238,15 +350,27 @@ namespace GFLLogisticsOptimizerWpf
             }
         }
 
-        public int CompareMissionSetCraftsPerMin(MissionSetCraftsPerMin A,MissionSetCraftsPerMin B)
+        public void UpdateMissionDisplay()
         {
-            if(A.CraftsPerMin < B.CraftsPerMin)
+            CurrentValidMissionsListBox.Items.Clear();
+            if (MissionList.Count > 0)
             {
-                return -1;
+                for (int i = 0; i < MissionList.Count; i++)
+                {
+                    CurrentValidMissionsListBox.Items.Add(MissionList[i].ToString());
+                }
             }
-            else if(A.CraftsPerMin > B.CraftsPerMin)
+        }
+
+        public int CompareMissionValuePerMin(MissionValuePerMin A,MissionValuePerMin B)
+        {
+            if (A.ValuePerMin < B.ValuePerMin)
             {
                 return 1;
+            }
+            else if (A.ValuePerMin > B.ValuePerMin)
+            {
+                return -1;
             }
             else
             {
@@ -254,19 +378,77 @@ namespace GFLLogisticsOptimizerWpf
             }
         }
 
+        public int CompareMissionSetCraftsPerMin(MissionSetCraftsPerMin A,MissionSetCraftsPerMin B)
+        {
+            if(A.CraftsPerMin < B.CraftsPerMin)
+            {
+                return 1;
+            }
+            else if(A.CraftsPerMin > B.CraftsPerMin)
+            {
+                return -1;
+            }
+            else
+            {
+                //in case of a tie, use total resources/min
+                if(A.CraftWeighedResourcesPerMin < B.CraftWeighedResourcesPerMin)
+                {
+                    return 1;
+                }
+                if(A.CraftWeighedResourcesPerMin > B.CraftWeighedResourcesPerMin)
+                {
+                    return -1;
+                }
+
+                return 0;
+            }
+        }
+
         private void OptimizeButton_Click(object sender, RoutedEventArgs e)
         {
             //check that all the input weights/craft amounts are valid numbers 
+            try
+            {
+                if (Convert.ToDouble(ManpowerTextBox.Text) < 0 || Convert.ToDouble(AmmoTextBox.Text) < 0 || Convert.ToDouble(RationsTextBox.Text) < 0 || Convert.ToDouble(PartsTextBox.Text) < 0 || Convert.ToDouble(TDollTextBox.Text) < 0 || Convert.ToDouble(EquipTextBox.Text) < 0 || Convert.ToDouble(QuickProductionTextBox.Text) < 0 || Convert.ToDouble(QuickRepairTextBox.Text) < 0 || Convert.ToDouble(TokenTextBox.Text) < 0)
+                {
+                    MessageBox.Show("Weights/craft amounts must be >= 0");
+                    return;
+                }
+            }
+            catch(Exception Ex)
+            {
+                MessageBox.Show("Failed to parse input weights/craft amounts: " + Ex.Message);
+                return;
+            }
+
+            //check that there greater than 4 missions allowed
             if(MissionList.Count > 4)
             {
+                //optimize for resources/min
                 if (OptimizationTypeComboBox.SelectedIndex == 0)
                 {
+                    //calculate the resource/min value for each mission
+                    List<MissionValuePerMin> MissionValues = new List<MissionValuePerMin>();
+                    for(int i = 0;i < MissionList.Count;i++)
+                    {
+                        MissionValuePerMin NewMissionValue = new MissionValuePerMin();
+                        NewMissionValue.Mission = MissionList[i];
+                        NewMissionValue.ValuePerMin = CalculateMissionValuePerMin(MissionList[i], Convert.ToDouble(ManpowerTextBox.Text), Convert.ToDouble(AmmoTextBox.Text), Convert.ToDouble(RationsTextBox.Text), Convert.ToDouble(PartsTextBox.Text), Convert.ToDouble(TDollTextBox.Text), Convert.ToDouble(EquipTextBox.Text), Convert.ToDouble(QuickProductionTextBox.Text), Convert.ToDouble(QuickRepairTextBox.Text), Convert.ToDouble(TokenTextBox.Text));
+                        MissionValues.Add(NewMissionValue);
+                    }
 
+                    //sort the missions to find the best ones
+                    MissionValues.Sort(CompareMissionValuePerMin);
+
+                    bool foo = true;
                 }
+                //optimize for crafts/min
                 if (OptimizationTypeComboBox.SelectedIndex == 1)
                 {
+                    //generate all possible mission combinations
                     var all_mission_sets = GetKCombs(MissionList, 4).ToList();
 
+                    //calculate the number of crafts/min for each mission combination
                     List<MissionSetCraftsPerMin> MissionSets = new List<MissionSetCraftsPerMin>();
                     MissionSets.Capacity = all_mission_sets.Count;
                     for(int i = 0;i < all_mission_sets.Count;i++)
@@ -277,14 +459,15 @@ namespace GFLLogisticsOptimizerWpf
                         {
                             continue;
                         }
+                        NewMissionSet.CraftWeighedResourcesPerMin = CalculateCraftWeightedValuePerMin(all_mission_sets[i], Convert.ToDouble(ManpowerTextBox.Text), Convert.ToDouble(AmmoTextBox.Text), Convert.ToDouble(RationsTextBox.Text), Convert.ToDouble(PartsTextBox.Text), Convert.ToDouble(TDollTextBox.Text), Convert.ToDouble(EquipTextBox.Text), Convert.ToDouble(QuickProductionTextBox.Text), Convert.ToDouble(QuickRepairTextBox.Text), Convert.ToDouble(TokenTextBox.Text));
                         NewMissionSet.MissionSet = all_mission_sets[i];                       
                         MissionSets.Add(NewMissionSet);
                     }
 
+                    //sort the mission combinations to find the best one
                     MissionSets.Sort(CompareMissionSetCraftsPerMin);
-                    MissionSets.Reverse();
 
-                    bool foo = true;
+                    CalculateCraftsPerMin(MissionSets[0].MissionSet,500,500,500,500,0,0,0,0,0);
                 }
             }
             else
@@ -309,13 +492,90 @@ namespace GFLLogisticsOptimizerWpf
         {
             CurrentValidMissionsListBox.Items.Clear();
             LoadMissionData(@"..\..\..\..\Logistics Data.csv", 0.66, 0.11);
-            if(MissionList.Count > 0)
+            UpdateMissionDisplay();
+        }
+
+        private void ApplyTimeContraintsButton_Click(object sender, RoutedEventArgs e)
+        {
+            int LowerLimitMins = 0;
+            bool UseLowerLimit = false;
+            int UpperLimitMins = 0;
+            bool UseUpperLimit = false;
+
+            //check that at least one textbox has something in it
+            if(string.IsNullOrWhiteSpace(LowerLimitTextBox.Text) == true && string.IsNullOrWhiteSpace(UpperLimitTextBox.Text) == true)
             {
-                for(int i = 0;i < MissionList.Count;i++)
+                MessageBox.Show("Please enter a valid value in one of the time limit boxs");
+                return;
+            }
+            //check that none of the textboxes has a non number in it
+            if(string.IsNullOrWhiteSpace(LowerLimitTextBox.Text) == false)
+            {
+                UseLowerLimit = true;
+                try
                 {
-                    CurrentValidMissionsListBox.Items.Add(MissionList[i].ToString());
+                    LowerLimitMins = Convert.ToInt32(Math.Round(Convert.ToDouble(LowerLimitTextBox.Text)*60));
+                }
+                catch(Exception Ex)
+                {
+                    MessageBox.Show("Lower limit invalid: " + Ex.Message);
+                    return;
                 }
             }
+            if(string.IsNullOrWhiteSpace(UpperLimitTextBox.Text) == false)
+            {
+                UseUpperLimit = true;
+                try
+                {
+                    UpperLimitMins = Convert.ToInt32(Math.Round(Convert.ToDouble(UpperLimitTextBox.Text)*60));
+                }
+                catch (Exception Ex)
+                {
+                    MessageBox.Show("Upper limit invalid: " + Ex.Message);
+                    return;
+                }
+            }
+
+            //apply the specified limits to the loaded missions
+            if(UseLowerLimit == true && UseUpperLimit == false)
+            {
+                for(int i = MissionList.Count - 1;i >= 0;i--)
+                {
+                    if(MissionList[i].TimeMins >= LowerLimitMins)
+                    {
+                        MissionList.RemoveAt(i);
+                    }
+                }
+            }
+            if(UseLowerLimit == false && UseUpperLimit == true)
+            {
+                for (int i = MissionList.Count - 1; i >= 0; i--)
+                {
+                    if (MissionList[i].TimeMins <= UpperLimitMins)
+                    {
+                        MissionList.RemoveAt(i);
+                    }
+                }
+            }
+            if(UseLowerLimit == true && UseUpperLimit == true)
+            {
+                //check that the upper limit is greater than the limit limit
+                if(UpperLimitMins <= LowerLimitMins)
+                {
+                    MessageBox.Show("Upper limit must be greater than the lower limit");
+                    return;
+                }
+                for (int i = MissionList.Count - 1; i >= 0; i--)
+                {
+                    if (MissionList[i].TimeMins >= LowerLimitMins && MissionList[i].TimeMins <= UpperLimitMins)
+                    {
+                        MissionList.RemoveAt(i);
+                    }
+                }
+            }
+
+            //update the mission list UI
+            UpdateMissionDisplay();
         }
     }
 }

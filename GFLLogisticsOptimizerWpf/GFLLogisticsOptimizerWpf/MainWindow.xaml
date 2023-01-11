@@ -1,13 +1,41 @@
-﻿<Window x:Class="GFLLogisticsOptimizerWpf.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GFLLogisticsOptimizerWpf"
+        xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="GFLLogisticsOptimizerWpf.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525" Background="#FFEAEAEA">
+        Title="MainWindow" Height="534" Width="554" Background="#FFEAEAEA">
     <Grid>
-        <Button x:Name="TestButton" Content="TestButton" HorizontalAlignment="Left" Margin="168,145,0,0" VerticalAlignment="Top" Width="75" Click="TestButton_Click"/>
+        <Label x:Name="ResourceLabel" Content="Resource Weights" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" FontSize="15"/>
+        <Button x:Name="OptimizeButton" Content="Optimize" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="75" Click="OptimizeButton_Click"/>
+        <Label x:Name="OptimizationTypeLabel" Content="Optimization Type" HorizontalAlignment="Left" Margin="10,0,0,57" VerticalAlignment="Bottom"/>
+        <ComboBox x:Name="OptimizationTypeComboBox" HorizontalAlignment="Left" Margin="10,0,0,35" VerticalAlignment="Bottom" Width="107" SelectedIndex="1" SelectionChanged="OptimizationTypeComboBox_SelectionChanged">
+            <System:String>Resources/Hr</System:String>
+            <System:String>Crafts/Hr</System:String>
+        </ComboBox>
+        <Label x:Name="ManpowerLabel" Content="Manpower" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,26,0,0"/>
+        <TextBox x:Name="ManpowerTextBox" HorizontalAlignment="Left" Height="23" Margin="10,52,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="128.75" Text="500"/>
+        <Label x:Name="AmmoLabel" Content="Ammo" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="143,26,0,0" RenderTransformOrigin="1.133,0.538"/>
+        <TextBox x:Name="AmmoTextBox" HorizontalAlignment="Left" Height="23" Margin="145,52,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="128.75" Text="500"/>
+        <Label x:Name="RationsLabel" Content="Rations" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="279,26,0,0"/>
+        <TextBox x:Name="RationsTextBox" HorizontalAlignment="Left" Height="23" Margin="279,52,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="128.75" Text="500"/>
+        <Label x:Name="PartsLabel" Content="Parts" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="413,26,0,0"/>
+        <TextBox x:Name="PartsTextBox" HorizontalAlignment="Left" Height="23" Margin="413,52,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="128.75" RenderTransformOrigin="0.707,0.609" Text="500"/>
+        <Label x:Name="TDollLabel" Content="TDoll" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,77,0,0"/>
+        <TextBox x:Name="TDollTextBox" HorizontalAlignment="Left" Height="23" Margin="10,103,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="102" Text="0"/>
+        <Label x:Name="EquipLabel" Content="Equip" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="117,77,0,0"/>
+        <TextBox x:Name="EquipTextBox" HorizontalAlignment="Left" Height="23" Margin="117,103,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="102" Text="0"/>
+        <Label x:Name="QuickProductionLabel" Content="Quick Production" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="224,77,0,0"/>
+        <TextBox x:Name="QuickProductionTextBox" HorizontalAlignment="Left" Height="23" Margin="224,103,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="102" Text="0"/>
+        <Label x:Name="QuickRepairLabel" Content="Quick Repair" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="331,77,0,0"/>
+        <TextBox x:Name="QuickRepairTextBox" HorizontalAlignment="Left" Height="23" Margin="331,103,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="102" Text="0"/>
+        <Label x:Name="TokenLabel" Content="Token" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="438,77,0,0"/>
+        <TextBox x:Name="TokenTextBox" HorizontalAlignment="Left" Height="23" Margin="438,103,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="104" Text="0"/>
+        <ListBox x:Name="CurrentValidMissionsListBox" Margin="10,156,10,83"/>
+        <Label x:Name="CurrentMissionsLabel" Content="Current Valid Missions" HorizontalAlignment="Left" Margin="11,126,0,0" VerticalAlignment="Top" FontSize="15"/>
+        <Button x:Name="LoadMissionsButton" Content="Load Missions" HorizontalAlignment="Left" Margin="168,132,0,0" VerticalAlignment="Top" Width="87" Click="LoadMissionsButton_Click"/>
 
     </Grid>
 </Window>

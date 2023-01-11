@@ -16,7 +16,7 @@ using System.Windows.Shapes;
 
 namespace GFLLogisticsOptimizerWpf
 {
-    public struct LogisticsMission
+    public class LogisticsMission : IComparable
     {
         public string Area;
         public double Manpower;
@@ -29,18 +29,56 @@ namespace GFLLogisticsOptimizerWpf
         public double QuickProduceContracts;
         public double QuickRepairContracts;
         public double Tokens;
+        public override string ToString()
+        {
+            return Area;
+        }
+        public int CompareTo(object obj)
+        {
+            if(obj == null)
+            {
+                return 1;
+            }
+
+            LogisticsMission otherMission = obj as LogisticsMission;
+            if(otherMission == null)
+            {
+                return 1;
+            }
+            return this.Area.CompareTo(otherMission.Area);
+        }
     }
 
-    public struct MissionValuePerMin
+    public class MissionValuePerMin
     {
         public LogisticsMission Mission;
         public double ValuePerMin;
+        public override string ToString()
+        {
+            return Mission.Area;
+        }
     }
 
-    public struct MissionSetCraftsPerMin
+    public class MissionSetCraftsPerMin
     {
         public List<LogisticsMission> MissionSet;
         public double CraftsPerMin;
+
+        public override string ToString()
+        {
+            string output = string.Empty;
+
+            for(int i = 0;i < MissionSet.Count;i++)
+            {
+                output += MissionSet[i].ToString();
+                if(i != MissionSet.Count - 1)
+                {
+                    output += ',';
+                }
+            }
+
+            return output;
+        }
     }
 
     /// <summary>
@@ -52,6 +90,15 @@ namespace GFLLogisticsOptimizerWpf
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        List<List<T>> GetKCombs<T>(List<T> list, int length) where T : IComparable
+        {
+            if (length == 1) return list.Select(t => new T[] { t }.ToList()).ToList();
+
+            return GetKCombs(list, length - 1)
+                .SelectMany(t => list.Where(o => o.CompareTo(t.Last()) > 0).ToList(),
+                    (t1, t2) => t1.Concat(new T[] { t2 }).ToList()).ToList();
         }
 
         public double CalculateMissionValuePerMin(LogisticsMission Mission,double ManpowerWeight,double AmmoWeight,double RationWeight,double PartWeight,double TDollWeight,double EquipmentWeight,double QuickProduceWeight,double QuickRepairWeight,double TokenWeight)
@@ -75,6 +122,7 @@ namespace GFLLogisticsOptimizerWpf
         {
             double CraftsPerMin = 10000000;
 
+            //get the crafts per minute allow by each resource
             double ManpowerCraftsPerMin = 0;
             double AmmoCraftsPerMin = 0;
             double RationCraftsPerMin = 0;
@@ -97,6 +145,7 @@ namespace GFLLogisticsOptimizerWpf
                 TokenCraftsPerMin += MissionSet[i].Tokens / TokenNeeded / MissionSet[i].TimeMins;
             }
 
+            //the smallest crafts per minute is the overall rate
             if(ManpowerNeeded > 0 && ManpowerCraftsPerMin < CraftsPerMin)
             {
                 CraftsPerMin = ManpowerCraftsPerMin;
@@ -189,9 +238,84 @@ namespace GFLLogisticsOptimizerWpf
             }
         }
 
-        private void TestButton_Click(object sender, RoutedEventArgs e)
+        public int CompareMissionSetCraftsPerMin(MissionSetCraftsPerMin A,MissionSetCraftsPerMin B)
         {
-            LoadMissionData(@"..\..\..\..\Logistics Data.csv",0.66,0.11);
+            if(A.CraftsPerMin < B.CraftsPerMin)
+            {
+                return -1;
+            }
+            else if(A.CraftsPerMin > B.CraftsPerMin)
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+        private void OptimizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            //check that all the input weights/craft amounts are valid numbers 
+            if(MissionList.Count > 4)
+            {
+                if (OptimizationTypeComboBox.SelectedIndex == 0)
+                {
+
+                }
+                if (OptimizationTypeComboBox.SelectedIndex == 1)
+                {
+                    var all_mission_sets = GetKCombs(MissionList, 4).ToList();
+
+                    List<MissionSetCraftsPerMin> MissionSets = new List<MissionSetCraftsPerMin>();
+                    MissionSets.Capacity = all_mission_sets.Count;
+                    for(int i = 0;i < all_mission_sets.Count;i++)
+                    {
+                        MissionSetCraftsPerMin NewMissionSet = new MissionSetCraftsPerMin();
+                        NewMissionSet.CraftsPerMin = CalculateCraftsPerMin(all_mission_sets[i], Convert.ToDouble(ManpowerTextBox.Text), Convert.ToDouble(AmmoTextBox.Text), Convert.ToDouble(RationsTextBox.Text), Convert.ToDouble(PartsTextBox.Text), Convert.ToDouble(TDollTextBox.Text), Convert.ToDouble(EquipTextBox.Text), Convert.ToDouble(QuickProductionTextBox.Text), Convert.ToDouble(QuickRepairTextBox.Text), Convert.ToDouble(TokenTextBox.Text));
+                        if(NewMissionSet.CraftsPerMin <= 0)
+                        {
+                            continue;
+                        }
+                        NewMissionSet.MissionSet = all_mission_sets[i];                       
+                        MissionSets.Add(NewMissionSet);
+                    }
+
+                    MissionSets.Sort(CompareMissionSetCraftsPerMin);
+                    MissionSets.Reverse();
+
+                    bool foo = true;
+                }
+            }
+            else
+            {
+                MessageBox.Show("No point optimizing if there are fewer than 4 valid missions");
+            }
+        }
+
+        private void OptimizationTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(OptimizationTypeComboBox.SelectedIndex == 0)
+            {
+                ResourceLabel.Content = "Resource Weights";
+            }
+            if(OptimizationTypeComboBox.SelectedIndex == 1)
+            {
+                ResourceLabel.Content = "Resources Per Craft";
+            }
+        }
+
+        private void LoadMissionsButton_Click(object sender, RoutedEventArgs e)
+        {
+            CurrentValidMissionsListBox.Items.Clear();
+            LoadMissionData(@"..\..\..\..\Logistics Data.csv", 0.66, 0.11);
+            if(MissionList.Count > 0)
+            {
+                for(int i = 0;i < MissionList.Count;i++)
+                {
+                    CurrentValidMissionsListBox.Items.Add(MissionList[i].ToString());
+                }
+            }
         }
     }
 }

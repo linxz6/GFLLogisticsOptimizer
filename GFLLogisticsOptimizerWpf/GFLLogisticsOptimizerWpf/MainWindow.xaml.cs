@@ -490,8 +490,22 @@ namespace GFLLogisticsOptimizerWpf
 
         private void LoadMissionsButton_Click(object sender, RoutedEventArgs e)
         {
+            //check that both the great success and base bonus are valid
+            double GreatSuccessRate = 0;
+            double BaseBonus = 0;
+            try
+            {
+                GreatSuccessRate = Convert.ToDouble(GreatSuccessTextBox.Text)/100;
+                BaseBonus = Convert.ToDouble(BaseBonusTextBox.Text) / 100;
+            }
+            catch (Exception Ex)
+            {
+                MessageBox.Show("Great Success Chance or Base Bonus are invalid: " + Ex.Message);
+                return;
+            }
+
             CurrentValidMissionsListBox.Items.Clear();
-            LoadMissionData(@"..\..\..\..\Logistics Data.csv", 0.66, 0.11);
+            LoadMissionData(@"..\..\..\..\Logistics Data.csv", GreatSuccessRate, BaseBonus);
             UpdateMissionDisplay();
         }
 

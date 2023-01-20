@@ -33,7 +33,29 @@
         <TextBox x:Name="QuickRepairTextBox" HorizontalAlignment="Left" Height="23" Margin="331,103,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="102" Text="0"/>
         <Label x:Name="TokenLabel" Content="Token" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="438,77,0,0"/>
         <TextBox x:Name="TokenTextBox" HorizontalAlignment="Left" Height="23" Margin="438,103,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="104" Text="0"/>
-        <ListBox x:Name="CurrentValidMissionsListBox" Margin="10,161,10,156"/>
+        <ListBox x:Name="CurrentValidMissionsListBox" Margin="10,161,10,156">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Area}" Height="20" Width= "30" TextAlignment="Center"/>
+                        <Image Margin="3" Source="@\..\..\images\clock.png" Height="18"/>
+                        <TextBlock Text="{Binding TimeString}" Height="20" Width= "30"/>
+                        <Image Margin="3" Source="@\..\..\images\manpower.png" Height="20"/>
+                        <TextBlock Text="{Binding ManpowerString}" Height="20" Width= "30"/>
+                        <Image Margin="3" Source="@\..\..\images\ammo.png" Height="20"/>
+                        <TextBlock Text="{Binding AmmoString}" Height="20" Width= "30"/>
+                        <Image Margin="3" Source="@\..\..\images\rations.png" Height="20"/>
+                        <TextBlock Text="{Binding RationString}" Height="20" Width= "30"/>
+                        <Image Margin="3" Source="@\..\..\images\parts.png" Height="20"/>
+                        <TextBlock Text="{Binding PartString}" Height="20" Width= "30"/>
+                        <Image Margin="3" Source="{Binding Bonus1Path}" Height="20"/>
+                        <TextBlock Text="{Binding Bonus1String}" Height="20" Width= "30"/>
+                        <Image Margin="3" Source="{Binding Bonus2Path}" Height="20"/>
+                        <TextBlock Text="{Binding Bonus2String}" Height="20" Width= "30"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
         <Label x:Name="CurrentMissionsLabel" Content="Current Valid Missions" HorizontalAlignment="Left" Margin="6,128,0,0" VerticalAlignment="Top" FontSize="15"/>
         <Button x:Name="LoadMissionsButton" Content="Load Missions" HorizontalAlignment="Left" Margin="163,136,0,0" VerticalAlignment="Top" Width="87" Click="LoadMissionsButton_Click"/>
         <Label x:Name="AddTimeConstraintsLabel" Content="Add Time Constraints" HorizontalAlignment="Left" Margin="9,0,0,126" VerticalAlignment="Bottom" FontSize="15"/>
@@ -46,16 +68,5 @@
         <Label x:Name="BaseBonusLabel" Content="Base Bonus(%)" HorizontalAlignment="Right" Margin="0,131,44,0" VerticalAlignment="Top"/>
         <TextBox x:Name="GreatSuccessTextBox" HorizontalAlignment="Right" Height="23" Margin="0,134,131,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="32" Text="66"/>
         <TextBox x:Name="BaseBonusTextBox" HorizontalAlignment="Right" Height="23" Margin="0,134,12,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="32" Text="11"/>
-        <ListBox x:Name="TestingListBox" HorizontalAlignment="Left" Height="96" Margin="173,607,0,0" VerticalAlignment="Top" Width="369">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <Image Margin="3" Source="{Binding Path}"/>
-                        <TextBlock Margin="3" Text="{Binding Name}"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-        <Button x:Name="TestingButton" Content="Test" HorizontalAlignment="Left" Margin="390,580,0,0" VerticalAlignment="Top" Width="75" Click="TestingButton_Click"/>
     </Grid>
 </Window>

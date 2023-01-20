@@ -18,7 +18,7 @@ namespace GFLLogisticsOptimizerWpf
 {
     public class LogisticsMission : IComparable
     {
-        public string Area;
+        public string Area { get; set; }
         public double Manpower;
         public double Ammo;
         public double Rations;
@@ -46,6 +46,297 @@ namespace GFLLogisticsOptimizerWpf
                 return 1;
             }
             return this.Area.CompareTo(otherMission.Area);
+        }
+
+        //string convertors for the display
+        public bool PerHourDisplay = false;
+        public string ManpowerString
+        {
+            get
+            {
+                if (PerHourDisplay)
+                {
+                    return Math.Round(Manpower / TimeMins * 60.0).ToString();
+                }
+                else
+                {
+                    return Math.Round(Manpower).ToString();
+                }
+            }
+        }
+        public string AmmoString
+        {
+            get
+            {
+                if (PerHourDisplay)
+                {
+                    return Math.Round(Ammo / TimeMins * 60.0).ToString();
+                }
+                else
+                {
+                    return Math.Round(Ammo).ToString();
+                }
+            }
+        }
+        public string RationString
+        {
+            get
+            {
+                if (PerHourDisplay)
+                {
+                    return Math.Round(Rations / TimeMins * 60.0).ToString();
+                }
+                else
+                {
+                    return Math.Round(Rations).ToString();
+                }
+            }
+        }
+        public string PartString
+        {
+            get
+            {
+                if (PerHourDisplay)
+                {
+                    return Math.Round(Parts / TimeMins * 60.0).ToString();
+                }
+                else
+                {
+                    return Math.Round(Parts).ToString();
+                }
+            }
+        }
+        public string TimeString
+        {
+            get
+            {
+                string output = (TimeMins / 60).ToString() + ":" + (TimeMins % 60).ToString();
+                if(TimeMins % 60 == 0)
+                {
+                    output += "0";
+                }
+                return output;
+            }
+        }
+        public string Bonus1String
+        {
+            get
+            {
+                if (TDollContracts > 0)
+                {
+                    if (PerHourDisplay)
+                    {
+                        return (TDollContracts / TimeMins * 60.0).ToString("G3");
+                    }
+                    else
+                    {
+                        return (TDollContracts).ToString("G3");
+                    }
+                }
+                if (EquipmentContracts > 0)
+                {
+                    if (PerHourDisplay)
+                    {
+                        return (EquipmentContracts / TimeMins * 60.0).ToString("G3");
+                    }
+                    else
+                    {
+                        return (EquipmentContracts).ToString("G3");
+                    }
+                }
+                if (QuickProduceContracts > 0)
+                {
+                    if (PerHourDisplay)
+                    {
+                        return (QuickProduceContracts / TimeMins * 60.0).ToString("G3");
+                    }
+                    else
+                    {
+                        return (QuickProduceContracts).ToString("G3");
+                    }
+                }
+                if (QuickRepairContracts > 0)
+                {
+                    if (PerHourDisplay)
+                    {
+                        return (QuickRepairContracts / TimeMins * 60.0).ToString("G3");
+                    }
+                    else
+                    {
+                        return (QuickRepairContracts).ToString("G3");
+                    }
+                }
+                if (Tokens > 0)
+                {
+                    if (PerHourDisplay)
+                    {
+                        return (Tokens / TimeMins * 60.0).ToString("G3");
+                    }
+                    else
+                    {
+                        return (Tokens).ToString("G3");
+                    }
+                }
+                return string.Empty;
+            }
+        }
+        public string Bonus1Path
+        {
+            get
+            {
+                if (TDollContracts > 0)
+                {
+                    return @"\..\..\images\tdoll contract.png";
+                }
+                if (EquipmentContracts > 0)
+                {
+                    return @"\..\..\images\equipment contract.png";
+                }
+                if (QuickProduceContracts > 0)
+                {
+                    return @"\..\..\images\quick production.png";
+                }
+                if (QuickRepairContracts > 0)
+                {
+                    return @"\..\..\images\quick repair.png";
+                }
+                if (Tokens > 0)
+                {
+                    return @"\..\..\images\token.png";
+                }
+                return string.Empty;
+            }
+        }
+        public string Bonus2String
+        {
+            get
+            {
+                bool bonus1found = false;
+                if (TDollContracts > 0)
+                {
+                    if (bonus1found)
+                    {
+                        if (PerHourDisplay)
+                        {
+                            return (TDollContracts / TimeMins * 60.0).ToString("G3");
+                        }
+                        else
+                        {
+                            return (TDollContracts).ToString("G3");
+                        }
+                    }
+                    bonus1found = true;
+                }
+                if (EquipmentContracts > 0)
+                {
+                    if (bonus1found)
+                    {
+                        if (PerHourDisplay)
+                        {
+                            return (EquipmentContracts / TimeMins * 60.0).ToString("G3");
+                        }
+                        else
+                        {
+                            return (EquipmentContracts).ToString("G3");
+                        }
+                    }
+                    bonus1found = true;
+                }
+                if (QuickProduceContracts > 0)
+                {
+                    if (bonus1found)
+                    {
+                        if (PerHourDisplay)
+                        {
+                            return (QuickProduceContracts / TimeMins * 60.0).ToString("G3");
+                        }
+                        else
+                        {
+                            return (QuickProduceContracts).ToString("G3");
+                        }
+                    }
+                    bonus1found = true;
+                }
+                if (QuickRepairContracts > 0)
+                {
+                    if (bonus1found)
+                    {
+                        if (PerHourDisplay)
+                        {
+                            return (QuickRepairContracts / TimeMins * 60.0).ToString("G3");
+                        }
+                        else
+                        {
+                            return (QuickRepairContracts).ToString("G3");
+                        }
+                    }
+                    bonus1found = true;
+                }
+                if (Tokens > 0)
+                {
+                    if (bonus1found)
+                    {
+                        if (PerHourDisplay)
+                        {
+                            return (Tokens / TimeMins * 60.0).ToString("G3");
+                        }
+                        else
+                        {
+                            return (Tokens).ToString("G3");
+                        }
+                    }
+                    bonus1found = true;
+                }
+                return string.Empty;
+            }
+        }
+        public string Bonus2Path
+        {
+            get
+            {
+                bool bonus1found = false;
+                if (TDollContracts > 0)
+                {
+                    if (bonus1found)
+                    {
+                        return @"\..\..\images\tdoll contract.png";
+                    }
+                    bonus1found = true;
+                }
+                if (EquipmentContracts > 0)
+                {                   
+                    if (bonus1found)
+                    {
+                        return @"\..\..\images\equipment contract.png";
+                    }
+                    bonus1found = true;
+                }
+                if (QuickProduceContracts > 0)
+                {                   
+                    if (bonus1found)
+                    {
+                        return @"\..\..\images\quick production.png";
+                    }
+                    bonus1found = true;
+                }
+                if (QuickRepairContracts > 0)
+                {
+                    if (bonus1found)
+                    {
+                        return @"\..\..\images\quick repair.png";
+                    }
+                    bonus1found = true;
+                }
+                if (Tokens > 0)
+                {
+                    if (bonus1found)
+                    {
+                        return @"\..\..\images\token.png";
+                    }
+                    bonus1found = true;
+                }
+                return string.Empty;
+            }
         }
     }
 
@@ -80,12 +371,6 @@ namespace GFLLogisticsOptimizerWpf
 
             return output;
         }
-    }
-
-    public class TestClass
-    {
-        public string Name { get; set; }
-        public string Path { get; set; }
     }
 
     /// <summary>
@@ -363,7 +648,7 @@ namespace GFLLogisticsOptimizerWpf
             {
                 for (int i = 0; i < MissionList.Count; i++)
                 {
-                    CurrentValidMissionsListBox.Items.Add(MissionList[i].ToString());
+                    CurrentValidMissionsListBox.Items.Add(MissionList[i]);
                 }
             }
         }
@@ -596,17 +881,6 @@ namespace GFLLogisticsOptimizerWpf
 
             //update the mission list UI
             UpdateMissionDisplay();
-        }
-
-        private void TestingButton_Click(object sender, RoutedEventArgs e)
-        {
-            TestClass ammo = new TestClass();
-            ammo.Name = "Ammo";
-            ammo.Path = @"\..\..\images\ammo.png";
-
-            TestingListBox.Items.Add(ammo);
-
-            bool foo = false;
         }
     }
 }

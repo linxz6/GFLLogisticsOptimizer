@@ -46,6 +46,16 @@
         <Label x:Name="BaseBonusLabel" Content="Base Bonus(%)" HorizontalAlignment="Right" Margin="0,131,44,0" VerticalAlignment="Top"/>
         <TextBox x:Name="GreatSuccessTextBox" HorizontalAlignment="Right" Height="23" Margin="0,134,131,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="32" Text="66"/>
         <TextBox x:Name="BaseBonusTextBox" HorizontalAlignment="Right" Height="23" Margin="0,134,12,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="32" Text="11"/>
-
+        <ListBox x:Name="TestingListBox" HorizontalAlignment="Left" Height="96" Margin="173,607,0,0" VerticalAlignment="Top" Width="369">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Margin="3" Source="{Binding Path}"/>
+                        <TextBlock Margin="3" Text="{Binding Name}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Button x:Name="TestingButton" Content="Test" HorizontalAlignment="Left" Margin="390,580,0,0" VerticalAlignment="Top" Width="75" Click="TestingButton_Click"/>
     </Grid>
 </Window>

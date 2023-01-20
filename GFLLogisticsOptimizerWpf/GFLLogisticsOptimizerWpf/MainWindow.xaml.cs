@@ -82,6 +82,12 @@ namespace GFLLogisticsOptimizerWpf
         }
     }
 
+    public class TestClass
+    {
+        public string Name { get; set; }
+        public string Path { get; set; }
+    }
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -590,6 +596,17 @@ namespace GFLLogisticsOptimizerWpf
 
             //update the mission list UI
             UpdateMissionDisplay();
+        }
+
+        private void TestingButton_Click(object sender, RoutedEventArgs e)
+        {
+            TestClass ammo = new TestClass();
+            ammo.Name = "Ammo";
+            ammo.Path = @"\..\..\images\ammo.png";
+
+            TestingListBox.Items.Add(ammo);
+
+            bool foo = false;
         }
     }
 }

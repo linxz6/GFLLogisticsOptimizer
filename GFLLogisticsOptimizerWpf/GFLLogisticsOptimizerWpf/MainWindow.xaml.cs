@@ -731,7 +731,13 @@ namespace GFLLogisticsOptimizerWpf
                     //sort the missions to find the best ones
                     MissionValues.Sort(CompareMissionValuePerMin);
 
-                    bool foo = true;
+                    //put the mission display in order
+                    MissionList.Clear();
+                    for(int i = 0;i < MissionValues.Count;i++)
+                    {
+                        MissionList.Add(MissionValues[i].Mission);
+                    }
+                    UpdateMissionDisplay();
                 }
                 //optimize for crafts/min
                 if (OptimizationTypeComboBox.SelectedIndex == 1)

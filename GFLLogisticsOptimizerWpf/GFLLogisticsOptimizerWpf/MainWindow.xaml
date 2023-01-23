@@ -7,6 +7,47 @@
         xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="GFLLogisticsOptimizerWpf.MainWindow"
         mc:Ignorable="d"
         Title="GFL Logistics Optimizer" Height="750" Width="725" Background="#FFEAEAEA" MinWidth="725" MinHeight="500">
+    <Window.Resources>
+        <DataTemplate x:Key="PerHourTemplate">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Area}" Height="20" Width= "35" TextAlignment="Center"/>
+                <Image Margin="3" Source="\..\..\images\clock.png" Height="18"/>
+                <TextBlock Text="{Binding TimeString}" Height="20" Width= "35"/>
+                <Image Margin="3" Source="\..\..\images\manpower.png" Height="20"/>
+                <TextBlock Text="{Binding ManpowerString}" Height="20" Width= "35"/>
+                <Image Margin="3" Source="\..\..\images\ammo.png" Height="20"/>
+                <TextBlock Text="{Binding AmmoString}" Height="20" Width= "35"/>
+                <Image Margin="3" Source="\..\..\images\rations.png" Height="20"/>
+                <TextBlock Text="{Binding RationString}" Height="20" Width= "35"/>
+                <Image Margin="3" Source="\..\..\images\parts.png" Height="20"/>
+                <TextBlock Text="{Binding PartString}" Height="20" Width= "35"/>
+                <Image Margin="3" Source="{Binding Bonus1Path}" Height="20"/>
+                <TextBlock Text="{Binding Bonus1String}" Height="20" Width= "55"/>
+                <Image Margin="3" Source="{Binding Bonus2Path}" Height="20"/>
+                <TextBlock Text="{Binding Bonus2String}" Height="20" Width= "55"/>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="PerCraftTemplate">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Area}" Height="20" Width= "35" TextAlignment="Center"/>
+                <Image Margin="3" Source="\..\..\images\clock.png" Height="18"/>
+                <TextBlock Text="{Binding TimeString}" Height="20" Width= "35"/>
+                <Image Margin="3" Source="\..\..\images\manpower.png" Height="20"/>
+                <TextBlock Text="{Binding ManpowerString}" Height="20" Width= "35"/>
+                <Image Margin="3" Source="\..\..\images\ammo.png" Height="20"/>
+                <TextBlock Text="{Binding AmmoString}" Height="20" Width= "35"/>
+                <Image Margin="3" Source="\..\..\images\rations.png" Height="20"/>
+                <TextBlock Text="{Binding RationString}" Height="20" Width= "35"/>
+                <Image Margin="3" Source="\..\..\images\parts.png" Height="20"/>
+                <TextBlock Text="{Binding PartString}" Height="20" Width= "35"/>
+                <Image Margin="3" Source="{Binding Bonus1Path}" Height="20"/>
+                <TextBlock Text="{Binding Bonus1String}" Height="20" Width= "35"/>
+                <Image Margin="3" Source="{Binding Bonus2Path}" Height="20"/>
+                <TextBlock Text="{Binding Bonus2String}" Height="20" Width= "35"/>
+            </StackPanel>
+        </DataTemplate>
+    </Window.Resources>
+
     <Grid Margin="0">
         <Label x:Name="ResourceLabel" Content="Resource Weights" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" FontSize="15"/>
         <Button x:Name="OptimizeButton" Content="Optimize" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="75" Click="OptimizeButton_Click"/>
@@ -15,29 +56,7 @@
             <System:String>Resources/Hr</System:String>
             <System:String>Crafts/Hr</System:String>
         </ComboBox>
-        <ListBox x:Name="CurrentValidMissionsListBox" Margin="10,161,10,156" SelectionMode="Extended" IsEnabled="True">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Area}" Height="20" Width= "30" TextAlignment="Center"/>
-                        <Image Margin="3" Source="@\..\..\images\clock.png" Height="18"/>
-                        <TextBlock Text="{Binding TimeString}" Height="20" Width= "30"/>
-                        <Image Margin="3" Source="@\..\..\images\manpower.png" Height="20"/>
-                        <TextBlock Text="{Binding ManpowerString}" Height="20" Width= "30"/>
-                        <Image Margin="3" Source="@\..\..\images\ammo.png" Height="20"/>
-                        <TextBlock Text="{Binding AmmoString}" Height="20" Width= "30"/>
-                        <Image Margin="3" Source="@\..\..\images\rations.png" Height="20"/>
-                        <TextBlock Text="{Binding RationString}" Height="20" Width= "30"/>
-                        <Image Margin="3" Source="@\..\..\images\parts.png" Height="20"/>
-                        <TextBlock Text="{Binding PartString}" Height="20" Width= "30"/>
-                        <Image Margin="3" Source="{Binding Bonus1Path}" Height="20"/>
-                        <TextBlock Text="{Binding Bonus1String}" Height="20" Width= "30"/>
-                        <Image Margin="3" Source="{Binding Bonus2Path}" Height="20"/>
-                        <TextBlock Text="{Binding Bonus2String}" Height="20" Width= "30"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+        <ListBox x:Name="CurrentValidMissionsListBox" Margin="10,161,10,156" SelectionMode="Extended" IsEnabled="True" ItemTemplate="{StaticResource PerHourTemplate}"/>
         <Label x:Name="CurrentMissionsLabel" Content="Current Valid Missions" HorizontalAlignment="Left" Margin="6,128,0,0" VerticalAlignment="Top" FontSize="15"/>
         <Button x:Name="LoadMissionsButton" Content="Load Missions" HorizontalAlignment="Left" Margin="163,134,0,0" VerticalAlignment="Top" Width="87" Click="LoadMissionsButton_Click"/>
         <Button x:Name="ChangeDisplayButton" Content="Switch To Per Hour" HorizontalAlignment="Left" VerticalAlignment="Top" Width="118" Margin="255,134,0,0" Click="ChangeDisplayButton_Click"/>

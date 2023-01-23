@@ -56,7 +56,7 @@ namespace GFLLogisticsOptimizerWpf
             {
                 if (PerHourDisplay)
                 {
-                    return Math.Round(Manpower / TimeMins * 60.0).ToString();
+                    return Math.Round(Manpower / TimeMins * 60.0).ToString() + "/hr";
                 }
                 else
                 {
@@ -70,7 +70,7 @@ namespace GFLLogisticsOptimizerWpf
             {
                 if (PerHourDisplay)
                 {
-                    return Math.Round(Ammo / TimeMins * 60.0).ToString();
+                    return Math.Round(Ammo / TimeMins * 60.0).ToString() + "/hr";
                 }
                 else
                 {
@@ -84,7 +84,7 @@ namespace GFLLogisticsOptimizerWpf
             {
                 if (PerHourDisplay)
                 {
-                    return Math.Round(Rations / TimeMins * 60.0).ToString();
+                    return Math.Round(Rations / TimeMins * 60.0).ToString() + "/hr";
                 }
                 else
                 {
@@ -98,7 +98,7 @@ namespace GFLLogisticsOptimizerWpf
             {
                 if (PerHourDisplay)
                 {
-                    return Math.Round(Parts / TimeMins * 60.0).ToString();
+                    return Math.Round(Parts / TimeMins * 60.0).ToString() + "/hr";
                 }
                 else
                 {
@@ -126,7 +126,7 @@ namespace GFLLogisticsOptimizerWpf
                 {
                     if (PerHourDisplay)
                     {
-                        return (TDollContracts / TimeMins * 60.0).ToString("G3");
+                        return (TDollContracts / TimeMins * 60.0).ToString("G3") + "/hr";
                     }
                     else
                     {
@@ -137,7 +137,7 @@ namespace GFLLogisticsOptimizerWpf
                 {
                     if (PerHourDisplay)
                     {
-                        return (EquipmentContracts / TimeMins * 60.0).ToString("G3");
+                        return (EquipmentContracts / TimeMins * 60.0).ToString("G3") + "/hr";
                     }
                     else
                     {
@@ -148,7 +148,7 @@ namespace GFLLogisticsOptimizerWpf
                 {
                     if (PerHourDisplay)
                     {
-                        return (QuickProduceContracts / TimeMins * 60.0).ToString("G3");
+                        return (QuickProduceContracts / TimeMins * 60.0).ToString("G3") + "/hr";
                     }
                     else
                     {
@@ -159,7 +159,7 @@ namespace GFLLogisticsOptimizerWpf
                 {
                     if (PerHourDisplay)
                     {
-                        return (QuickRepairContracts / TimeMins * 60.0).ToString("G3");
+                        return (QuickRepairContracts / TimeMins * 60.0).ToString("G3") + "/hr";
                     }
                     else
                     {
@@ -170,7 +170,7 @@ namespace GFLLogisticsOptimizerWpf
                 {
                     if (PerHourDisplay)
                     {
-                        return (Tokens / TimeMins * 60.0).ToString("G3");
+                        return (Tokens / TimeMins * 60.0).ToString("G3") + "/hr";
                     }
                     else
                     {
@@ -218,7 +218,7 @@ namespace GFLLogisticsOptimizerWpf
                     {
                         if (PerHourDisplay)
                         {
-                            return (TDollContracts / TimeMins * 60.0).ToString("G3");
+                            return (TDollContracts / TimeMins * 60.0).ToString("G3") + "/hr";
                         }
                         else
                         {
@@ -233,7 +233,7 @@ namespace GFLLogisticsOptimizerWpf
                     {
                         if (PerHourDisplay)
                         {
-                            return (EquipmentContracts / TimeMins * 60.0).ToString("G3");
+                            return (EquipmentContracts / TimeMins * 60.0).ToString("G3") + "/hr";
                         }
                         else
                         {
@@ -248,7 +248,7 @@ namespace GFLLogisticsOptimizerWpf
                     {
                         if (PerHourDisplay)
                         {
-                            return (QuickProduceContracts / TimeMins * 60.0).ToString("G3");
+                            return (QuickProduceContracts / TimeMins * 60.0).ToString("G3") + "/hr";
                         }
                         else
                         {
@@ -263,7 +263,7 @@ namespace GFLLogisticsOptimizerWpf
                     {
                         if (PerHourDisplay)
                         {
-                            return (QuickRepairContracts / TimeMins * 60.0).ToString("G3");
+                            return (QuickRepairContracts / TimeMins * 60.0).ToString("G3") + "/hr";
                         }
                         else
                         {
@@ -278,7 +278,7 @@ namespace GFLLogisticsOptimizerWpf
                     {
                         if (PerHourDisplay)
                         {
-                            return (Tokens / TimeMins * 60.0).ToString("G3");
+                            return (Tokens / TimeMins * 60.0).ToString("G3") + "/hr";
                         }
                         else
                         {
@@ -648,6 +648,15 @@ namespace GFLLogisticsOptimizerWpf
         public void UpdateMissionDisplay()
         {
             CurrentValidMissionsListBox.Items.Clear();
+            //Switch display template based on per hour or per craft
+            if(DisplayPerHour)
+            {
+                CurrentValidMissionsListBox.ItemTemplate = (DataTemplate)FindResource("PerHourTemplate");
+            }
+            else
+            {
+                CurrentValidMissionsListBox.ItemTemplate = (DataTemplate)FindResource("PerCraftTemplate");
+            }
             if (MissionList.Count > 0)
             {
                 for (int i = 0; i < MissionList.Count; i++)

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:GFLLogisticsOptimizerWpf"
         xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="GFLLogisticsOptimizerWpf.MainWindow"
         mc:Ignorable="d"
-        Title="GFL Logistics Optimizer" Height="744" Width="686" Background="#FFEAEAEA">
+        Title="GFL Logistics Optimizer" Height="744" Width="725" Background="#FFEAEAEA">
     <Grid Margin="0">
         <Label x:Name="ResourceLabel" Content="Resource Weights" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" FontSize="15"/>
         <Button x:Name="OptimizeButton" Content="Optimize" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="75" Click="OptimizeButton_Click"/>
@@ -40,6 +40,7 @@
         </ListBox>
         <Label x:Name="CurrentMissionsLabel" Content="Current Valid Missions" HorizontalAlignment="Left" Margin="6,128,0,0" VerticalAlignment="Top" FontSize="15"/>
         <Button x:Name="LoadMissionsButton" Content="Load Missions" HorizontalAlignment="Left" Margin="163,134,0,0" VerticalAlignment="Top" Width="87" Click="LoadMissionsButton_Click"/>
+        <Button x:Name="ChangeDisplayButton" Content="Switch To Per Hour" HorizontalAlignment="Left" VerticalAlignment="Top" Width="118" Margin="255,134,0,0" Click="ChangeDisplayButton_Click"/>
         <Label x:Name="AddTimeConstraintsLabel" Content="Add Time Constraints" HorizontalAlignment="Left" Margin="9,0,0,126" VerticalAlignment="Bottom" FontSize="15"/>
         <TextBox x:Name="LowerLimitTextBox" HorizontalAlignment="Left" Height="22" Margin="10,0,0,108" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="47"/>
         <Label x:Name="LowerLimitLabel" Content="hours ≤ Missions to remove ≤" HorizontalAlignment="Left" Margin="57,0,0,106" VerticalAlignment="Bottom"/>

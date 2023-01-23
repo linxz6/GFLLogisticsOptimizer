@@ -890,5 +890,23 @@ namespace GFLLogisticsOptimizerWpf
             //update the mission list UI
             UpdateMissionDisplay();
         }
+
+        private void ChangeDisplayButton_Click(object sender, RoutedEventArgs e)
+        {
+            DisplayPerHour = !DisplayPerHour;
+            if(DisplayPerHour)
+            {
+                ChangeDisplayButton.Content = "Switch To Per Craft";
+            }
+            else
+            {
+                ChangeDisplayButton.Content = "Switch To Per Hour";
+            }
+            for(int i = 0;i < MissionList.Count;i++)
+            {
+                MissionList[i].PerHourDisplay = DisplayPerHour;
+            }
+            UpdateMissionDisplay();
+        }
     }
 }

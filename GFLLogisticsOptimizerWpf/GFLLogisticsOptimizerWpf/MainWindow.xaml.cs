@@ -379,6 +379,7 @@ namespace GFLLogisticsOptimizerWpf
     public partial class MainWindow : Window
     {
         public List<LogisticsMission> MissionList = new List<LogisticsMission>();
+        public bool DisplayPerHour = false;
         public MainWindow()
         {
             InitializeComponent();
@@ -615,6 +616,7 @@ namespace GFLLogisticsOptimizerWpf
                         NewMission.QuickProduceContracts = Convert.ToDouble(values[8]);
                         NewMission.QuickRepairContracts = Convert.ToDouble(values[9]);
                         NewMission.Tokens = Convert.ToDouble(values[10]);
+                        NewMission.PerHourDisplay = DisplayPerHour;
 
                         //calculate the effect of great success on the chance of getting bonus items
                         double TotalChanceItemBeforeGreatSuccess = NewMission.TDollContracts + NewMission.EquipmentContracts + NewMission.QuickProduceContracts + NewMission.QuickRepairContracts + NewMission.Tokens;

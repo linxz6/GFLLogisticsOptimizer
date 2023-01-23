@@ -340,6 +340,22 @@ namespace GFLLogisticsOptimizerWpf
         }
     }
 
+    public class MissionComp : IComparer<LogisticsMission>
+    {
+        public int Compare(LogisticsMission A,LogisticsMission B)
+        {
+            if(A.Area.Length < B.Area.Length)
+            {
+                return -1;
+            }
+            if (A.Area.Length > B.Area.Length)
+            {
+                return 1;
+            }
+            return string.Compare(A.Area, B.Area);
+        }
+    }
+
     public class MissionValuePerMin
     {
         public LogisticsMission Mission;
@@ -963,6 +979,9 @@ namespace GFLLogisticsOptimizerWpf
                 MissionList.Remove(SelectedSet.MissionSet[i]);
                 MissionList.Insert(i, SelectedSet.MissionSet[i]);
             }
+            //sort the rest of the list by area
+            MissionComp compare = new MissionComp();
+            MissionList.Sort(SelectedSet.MissionSet.Count, MissionList.Count - SelectedSet.MissionSet.Count,compare);
             UpdateMissionDisplay();
             //select the missions
             for (int i = 0;i < SelectedSet.MissionSet.Count;i++)

@@ -379,6 +379,7 @@ namespace GFLLogisticsOptimizerWpf
     public partial class MainWindow : Window
     {
         public List<LogisticsMission> MissionList = new List<LogisticsMission>();
+        public List<MissionSetCraftsPerMin> CraftsPerMinSetList = new List<MissionSetCraftsPerMin>();
         public bool DisplayPerHour = false;
         public MainWindow()
         {
@@ -593,6 +594,7 @@ namespace GFLLogisticsOptimizerWpf
         public bool LoadMissionData(string FilePath,double GreatSuccessRate,double BaseRankBonus)
         {
             MissionList.Clear();
+            CraftsPerMinSetList.Clear();
             try
             {
                 using (var reader = new StreamReader(FilePath))
@@ -651,6 +653,18 @@ namespace GFLLogisticsOptimizerWpf
                 for (int i = 0; i < MissionList.Count; i++)
                 {
                     CurrentValidMissionsListBox.Items.Add(MissionList[i]);
+                }
+            }
+        }
+
+        public void UpdateMissionSetDisplay()
+        {
+            CraftsPerMinSetListBox.Items.Clear();
+            if (CraftsPerMinSetList.Count > 0)
+            {
+                for (int i = 0; i < CraftsPerMinSetList.Count; i++)
+                {
+                    CraftsPerMinSetListBox.Items.Add(CraftsPerMinSetList[i].ToString() + " : " + (CraftsPerMinSetList[i].CraftsPerMin*60).ToString("G4") + " Crafts Per Hour");
                 }
             }
         }
@@ -717,6 +731,8 @@ namespace GFLLogisticsOptimizerWpf
             //check that there greater than 4 missions allowed
             if(MissionList.Count > 4)
             {
+                CraftsPerMinSetList.Clear();
+                UpdateMissionSetDisplay();
                 //optimize for resources/min
                 if (OptimizationTypeComboBox.SelectedIndex == 0)
                 {
@@ -766,7 +782,18 @@ namespace GFLLogisticsOptimizerWpf
                     //sort the mission combinations to find the best one
                     MissionSets.Sort(CompareMissionSetCraftsPerMin);
 
-                    CalculateCraftsPerMin(MissionSets[0].MissionSet,500,500,500,500,0,0,0,0,0);
+                    //store the top 20 mission sets and display them
+                    for(int i = 0;i < 20;i++)
+                    {
+                        if(i + 1 >= MissionSets.Count)
+                        {
+                            break;
+                        }
+                        CraftsPerMinSetList.Add(MissionSets[i]);
+                    }
+                    UpdateMissionSetDisplay();
+                    CraftsPerMinSetListBox.SelectedIndex = 0;
+                    CraftsPerMinSetListBox.ScrollIntoView(CraftsPerMinSetListBox.Items[0]);
                 }
             }
             else
@@ -806,6 +833,7 @@ namespace GFLLogisticsOptimizerWpf
             CurrentValidMissionsListBox.Items.Clear();
             LoadMissionData(@"..\..\..\..\Logistics Data.csv", GreatSuccessRate, BaseBonus);
             UpdateMissionDisplay();
+            UpdateMissionSetDisplay();
         }
 
         private void ApplyTimeContraintsButton_Click(object sender, RoutedEventArgs e)
@@ -889,6 +917,8 @@ namespace GFLLogisticsOptimizerWpf
 
             //update the mission list UI
             UpdateMissionDisplay();
+            CraftsPerMinSetList.Clear();
+            UpdateMissionSetDisplay();
         }
 
         private void ChangeDisplayButton_Click(object sender, RoutedEventArgs e)
@@ -907,6 +937,30 @@ namespace GFLLogisticsOptimizerWpf
                 MissionList[i].PerHourDisplay = DisplayPerHour;
             }
             UpdateMissionDisplay();
+        }
+
+        private void CraftsPerMinSetListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(CraftsPerMinSetListBox.SelectedIndex < 0)
+            {
+                return;
+            }
+            CurrentValidMissionsListBox.SelectedIndex = -1;
+
+            MissionSetCraftsPerMin SelectedSet = CraftsPerMinSetList[CraftsPerMinSetListBox.SelectedIndex];
+            //move the selected mission set missions to the top of the display
+            for (int i = 0; i < SelectedSet.MissionSet.Count; i++)
+            {
+                MissionList.Remove(SelectedSet.MissionSet[i]);
+                MissionList.Insert(i, SelectedSet.MissionSet[i]);
+            }
+            UpdateMissionDisplay();
+            //select the missions
+            for (int i = 0;i < SelectedSet.MissionSet.Count;i++)
+            {
+                CurrentValidMissionsListBox.SelectedItems.Add(SelectedSet.MissionSet[i]);
+            }
+            CurrentValidMissionsListBox.ScrollIntoView(CurrentValidMissionsListBox.SelectedItems[0]);
         }
     }
 }

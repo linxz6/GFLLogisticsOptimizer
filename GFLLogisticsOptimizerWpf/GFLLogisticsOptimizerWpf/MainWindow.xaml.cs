@@ -414,6 +414,8 @@ namespace GFLLogisticsOptimizerWpf
             LowerLimitTextBox.Text = Properties.Settings.Default.LowerLimit;
             UpperLimitTextBox.Text = Properties.Settings.Default.UpperLimit;
             OptimizationTypeComboBox.SelectedIndex = Properties.Settings.Default.OptimizationTypeIndex;
+
+            LoadMissionsButton_Click(this, new RoutedEventArgs());
         }
 
         List<List<T>> GetKCombs<T>(List<T> list, int length) where T : IComparable

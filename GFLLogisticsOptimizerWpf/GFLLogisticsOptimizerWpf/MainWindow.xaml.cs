@@ -400,6 +400,20 @@ namespace GFLLogisticsOptimizerWpf
         public MainWindow()
         {
             InitializeComponent();
+            ManpowerTextBox.Text = Properties.Settings.Default.Manpower;
+            AmmoTextBox.Text = Properties.Settings.Default.Ammo;
+            RationsTextBox.Text = Properties.Settings.Default.Rations;
+            PartsTextBox.Text = Properties.Settings.Default.Parts;
+            TDollTextBox.Text = Properties.Settings.Default.TDoll;
+            EquipTextBox.Text = Properties.Settings.Default.Equip;
+            QuickProductionTextBox.Text = Properties.Settings.Default.QuickProduction;
+            QuickRepairTextBox.Text = Properties.Settings.Default.QuickRepair;
+            TokenTextBox.Text = Properties.Settings.Default.Token;
+            GreatSuccessTextBox.Text = Properties.Settings.Default.GreatSuccessChance;
+            BaseBonusTextBox.Text = Properties.Settings.Default.BaseBonus;
+            LowerLimitTextBox.Text = Properties.Settings.Default.LowerLimit;
+            UpperLimitTextBox.Text = Properties.Settings.Default.UpperLimit;
+            OptimizationTypeComboBox.SelectedIndex = Properties.Settings.Default.OptimizationTypeIndex;
         }
 
         List<List<T>> GetKCombs<T>(List<T> list, int length) where T : IComparable
@@ -989,6 +1003,25 @@ namespace GFLLogisticsOptimizerWpf
                 CurrentValidMissionsListBox.SelectedItems.Add(SelectedSet.MissionSet[i]);
             }
             CurrentValidMissionsListBox.ScrollIntoView(CurrentValidMissionsListBox.SelectedItems[0]);
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Properties.Settings.Default.Manpower = ManpowerTextBox.Text;
+            Properties.Settings.Default.Ammo = AmmoTextBox.Text;
+            Properties.Settings.Default.Rations = RationsTextBox.Text;
+            Properties.Settings.Default.Parts = PartsTextBox.Text;
+            Properties.Settings.Default.TDoll = TDollTextBox.Text;
+            Properties.Settings.Default.Equip = EquipTextBox.Text;
+            Properties.Settings.Default.QuickProduction = QuickProductionTextBox.Text;
+            Properties.Settings.Default.QuickRepair = QuickRepairTextBox.Text;
+            Properties.Settings.Default.Token = TokenTextBox.Text;
+            Properties.Settings.Default.GreatSuccessChance = GreatSuccessTextBox.Text;
+            Properties.Settings.Default.BaseBonus = BaseBonusTextBox.Text;
+            Properties.Settings.Default.LowerLimit = LowerLimitTextBox.Text;
+            Properties.Settings.Default.UpperLimit = UpperLimitTextBox.Text;
+            Properties.Settings.Default.OptimizationTypeIndex = OptimizationTypeComboBox.SelectedIndex;
+            Properties.Settings.Default.Save();
         }
     }
 }

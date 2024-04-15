@@ -202,5 +202,17 @@ namespace GFLLogisticsOptimizerWpf.Properties {
                 this["Setting"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int NumMissionsIndex {
+            get {
+                return ((int)(this["NumMissionsIndex"]));
+            }
+            set {
+                this["NumMissionsIndex"] = value;
+            }
+        }
     }
 }

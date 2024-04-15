@@ -50,6 +50,13 @@
 
     <Grid Margin="0">
         <Label x:Name="ResourceLabel" Content="Resource Weights" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" FontSize="15"/>
+        <ComboBox x:Name="NumMissionsComboBox" HorizontalAlignment="Left" Margin="122,0,0,35" VerticalAlignment="Bottom" Width="56" SelectedIndex="0">
+            <System:String>4</System:String>
+            <System:String>3</System:String>
+            <System:String>2</System:String>
+            <System:String>1</System:String>
+        </ComboBox>
+        <Label x:Name="NumMissionsLabel" Content="# Missions" HorizontalAlignment="Left" Margin="117,0,0,57" VerticalAlignment="Bottom" RenderTransformOrigin="0.447,-0.192"/>
         <Button x:Name="OptimizeButton" Content="Optimize" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="75" Click="OptimizeButton_Click"/>
         <Label x:Name="OptimizationTypeLabel" Content="Optimization Type" HorizontalAlignment="Left" Margin="10,0,0,57" VerticalAlignment="Bottom"/>
         <ComboBox x:Name="OptimizationTypeComboBox" HorizontalAlignment="Left" Margin="10,0,0,35" VerticalAlignment="Bottom" Width="107" SelectedIndex="1" SelectionChanged="OptimizationTypeComboBox_SelectionChanged">

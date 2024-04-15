@@ -414,6 +414,7 @@ namespace GFLLogisticsOptimizerWpf
             LowerLimitTextBox.Text = Properties.Settings.Default.LowerLimit;
             UpperLimitTextBox.Text = Properties.Settings.Default.UpperLimit;
             OptimizationTypeComboBox.SelectedIndex = Properties.Settings.Default.OptimizationTypeIndex;
+            NumMissionsComboBox.SelectedIndex = Properties.Settings.Default.NumMissionsIndex;
 
             LoadMissionsButton_Click(this, new RoutedEventArgs());
         }
@@ -802,7 +803,7 @@ namespace GFLLogisticsOptimizerWpf
                 if (OptimizationTypeComboBox.SelectedIndex == 1)
                 {
                     //generate all possible mission combinations
-                    var all_mission_sets = GetKCombs(MissionList, 4).ToList();
+                    var all_mission_sets = GetKCombs(MissionList, Convert.ToInt32(NumMissionsComboBox.SelectedItem)).ToList();
 
                     //calculate the number of crafts/min for each mission combination
                     List<MissionSetCraftsPerMin> MissionSets = new List<MissionSetCraftsPerMin>();
@@ -848,10 +849,12 @@ namespace GFLLogisticsOptimizerWpf
             if(OptimizationTypeComboBox.SelectedIndex == 0)
             {
                 ResourceLabel.Content = "Resource Weights";
+                NumMissionsComboBox.IsEnabled = false;
             }
             if(OptimizationTypeComboBox.SelectedIndex == 1)
             {
                 ResourceLabel.Content = "Resources Per Craft";
+                NumMissionsComboBox.IsEnabled = true;
             }
         }
 
@@ -1023,6 +1026,7 @@ namespace GFLLogisticsOptimizerWpf
             Properties.Settings.Default.LowerLimit = LowerLimitTextBox.Text;
             Properties.Settings.Default.UpperLimit = UpperLimitTextBox.Text;
             Properties.Settings.Default.OptimizationTypeIndex = OptimizationTypeComboBox.SelectedIndex;
+            Properties.Settings.Default.NumMissionsIndex = NumMissionsComboBox.SelectedIndex;
             Properties.Settings.Default.Save();
         }
     }
